@@ -35,26 +35,25 @@ Create exchange , queue & and bind queue to exchange:
 -----------------------------------------------------
 
 # Rabbitmq management:
+
 It comes with a command line tool which you can use to create/configure all of your queues/exchanges/etc
 https://www.rabbitmq.com/management.html
 
 # Install rabbitmq management plugin:
+
 sudo rabbitmq-plugins enable rabbitmq_management
 
 # Use the default exchange amq.topic
+
 OR create an exchange as below, the same name as the one you specify within the cfg_amqp.txt
 #sudo rabbitmqadmin -u guest -p guest -V / declare exchange name=myexchange type=topic
 
 # Create a Queue
+
 sudo rabbitmqadmin -u guest -p guest -V / declare queue name=myqueue durable=false auto_delete=true
 
-#BIND QUEUE TO EXCHANGE WITH ROUTHING_KEY SPECIFICATION (MANDANTORY) 
+# BIND QUEUE TO EXCHANGE WITH ROUTHING_KEY SPECIFICATION (MANDANTORY) 
 rabbitmqadmin -u guest -p guest -V / declare binding source=amq.topic destination=myqueue routing_key=topicname
-
-#To check if the queues were actually created, execute:
-$ sudo rabbitmqctl list_queues
-Listing queues
-myqueue      0
 
 Setup the message_converter_broker: 
 -----------------------------------
@@ -68,11 +67,6 @@ Setup the message_converter_broker:
 #topic: <topic_name>
 
 #msg_broker_config: nvgraph/cfg_amqp.txt
-
-Open the Rabbitmq managemer:
----------------------------
-
-http://localhost:15672
 
 sending message from localhost to cloud
 ----------------------------------------
