@@ -7,24 +7,30 @@ Dependencies
  
 Install rabbitmq-c library
 --------------------------
- sudo apt-get install librabbitmq-dev 
+ sudo apt-get install librabbitmq-dev
+ 
  sudo cp /usr/lib/x86_64-linux-gnu/librabbitmq.so /opt/nvidia/deepstream/deepstream-6.3/lib #add libraly to deepstream 
+ 
  sudo cp /usr/lib/x86_64-linux-gnu/librabbitmq.so.4 /opt/nvidia/deepstream/deepstream-6.3/lib 
+ 
  sudo cp /usr/lib/x86_64-linux-gnu/librabbitmq.so.4.4.0 /opt/nvidia/deepstream/deepstream-6.3/lib #add libraly to deepstream 
+ 
  sudo cp /usr/lib/x86_64-linux-gnu/librabbitmq.a /opt/nvidia/deepstream/deepstream-6.3/lib #add libraly to deepstream 
  
 If you plan to have AMQP broker installed on your local machine
 ---------------------------------------------------------------
 #Install rabbitmq on your ubuntu system: https://www.rabbitmq.com/install-debian.html
-#The “Using rabbitmq.com APT Repository” procedure is known to work well
 
  sudo apt-get install rabbitmq-server
 
 #Ensure rabbitmq service has started by running (should be the case):
+
  sudo service rabbitmq-server status
 
 #Otherwise
+
  sudo service rabbitmq-server start
+ 
 Create exchange , queue & and bind queue to exchange:
 -----------------------------------------------------
 
