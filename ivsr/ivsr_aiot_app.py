@@ -63,9 +63,9 @@ GST_CAPS_FEATURES_NVMM = "memory:NVMM"
 pgie_classes_str = ["Vehicle", "TwoWheeler", "Person", "RoadSign"]
 schema_type = 0
 #msgbroker property
-proto_lib = /opt/nvidia/deepstream/deepstream-6.3/lib/libnvds_amqp_proto.so
+proto_lib = "/opt/nvidia/deepstream/deepstream-6.3/lib/libnvds_amqp_proto.so"
 conn_str = "192.168.0.201;5672;admin;admin"
-cfg_file = cfg_amqp.txt
+cfg_file = "cfg_amqp.txt"
 topic = None
 no_display = False
 
@@ -512,17 +512,22 @@ def main(args):
     nvosd = Gst.ElementFactory.make("nvdsosd", "onscreendisplay")
     if not nvosd:
         sys.stderr.write(" Unable to create nvosd \n")
-    if is_aarch64():
-        print("Creating nv3dsink \n")
-        sink = Gst.ElementFactory.make("nv3dsink", "nv3d-sink")
+    if no_display:
+        print("Creating FakeSink \n")
+        sink = Gst.ElementFactory.make("fakesink", "fakesink")
         if not sink:
-            sys.stderr.write(" Unable to create nv3dsink \n")
+            sys.stderr.write(" Unable to create fakesink \n")
     else:
-        print("Creating EGLSink \n")
-        sink = Gst.ElementFactory.make("nveglglessink", "nvvideo-renderer")
-        if not sink:
-            sys.stderr.write(" Unable to create egl sink \n")
-
+        if is_aarch64():
+            print("Creating nv3dsink \n")
+            sink = Gst.ElementFactory.make("nv3dsink", "nv3d-sink")
+            if not sink:
+                sys.stderr.write(" Unable to create nv3dsink \n")
+        else:
+            print("Creating EGLSink \n")
+            sink = Gst.ElementFactory.make("nveglglessink", "nvvideo-renderer")
+            if not sink:
+                sys.stderr.write(" Unable to create egl sink \n")
     if is_live:
         print("Atleast one of the sources is live")
         streammux.set_property('live-source', 1)
