@@ -584,6 +584,15 @@ def main(args):
     pipeline.add(sink)
 
     print("Linking elements in the Pipeline \n")
+
+    sinkpad = streammux.get_request_pad("sink_0")
+    if not sinkpad:
+        sys.stderr.write(" Unable to get the sink pad of streammux \n")
+    srcpad = decoder.get_static_pad("src")
+    if not srcpad:
+        sys.stderr.write(" Unable to get source pad of decoder \n")
+    srcpad.link(sinkpad)
+
     streammux.link(pgie)
     pgie.link(nvvidconv1)
     nvvidconv1.link(filter1)
@@ -594,6 +603,14 @@ def main(args):
     queue1.link(msgconv)
     msgconv.link(msgbroker)
     queue2.link(sink)
+    sink_pad = queue1.get_static_pad("sink")
+    tee_msg_pad = tee.get_request_pad('src_%u')
+    tee_render_pad = tee.get_request_pad("src_%u")
+    if not tee_msg_pad or not tee_render_pad:
+        sys.stderr.write("Unable to get request pads\n")
+    tee_msg_pad.link(sink_pad)
+    sink_pad = queue2.get_static_pad("sink")
+    tee_render_pad.link(sink_pad)
 
     # create an event loop and feed gstreamer bus mesages to it
     loop = GLib.MainLoop()
